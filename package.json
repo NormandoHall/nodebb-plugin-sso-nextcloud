@@ -1,11 +1,11 @@
 {
-  "name": "nodebb-plugin-sso-oauth",
+  "name": "nodebb-plugin-sso-nextcloud",
   "version": "0.3.4",
-  "description": "NodeBB Generic OAuth SSO",
+  "description": "NodeBB NextCloud OAuth SSO",
   "main": "library.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/julianlam/nodebb-plugin-sso-oauth"
+    "url": "https://github.com/NormandoHall/nodebb-plugin-sso-nextcloud"
   },
   "keywords": [
     "nodebb",
@@ -15,7 +15,8 @@
     "sso",
     "single sign on",
     "login",
-    "registration"
+    "registration",
+    "nextcloud"
   ],
   "author": {
     "name": "Julian Lam",
