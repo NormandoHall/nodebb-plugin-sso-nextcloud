@@ -56,5 +56,8 @@
       "eslint --fix",
       "git add"
     ]
+  },
+    "nbbpm": {
+    "compatibility": "^1.7.0"
   }
 }
