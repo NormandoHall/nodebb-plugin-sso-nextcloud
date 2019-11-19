@@ -1,23 +1,23 @@
 # NodeBB OAuth SSO NextCloud
 ### Forked and based on @julianlam code
 
-NodeBB Plugin that allows users to login/register via any NextCloud OAuth provider.
+NodeBB Plugin that allows users to login/register via any NextCloud OAuth2 provider.
 
 ## How to Adapt
 
-1. Change **NC_URL** with your NextCloud URL (lines 60, 61 and 65 of `library.js`)
-1. Edit your NodeBB **config.json** file and add the ID/Secret pair:
+* Change **NC_URL** with your NextCloud URL (lines 60, 61 and 65 of `library.js`)
+* Edit your NodeBB `config.json` file and add the ID/Secret pair:
 
-...
+```
   "oauth": {
     "id": "someoauthid",
     "secret": "youroauthsecret"
-  }
-...
+  },
+```
 
-1. Activate this plugin from the plugins page
-1. Restart your NodeBB
-1. Let NodeBB take care of the rest
+* Activate this plugin from the plugins page
+* Restart your NodeBB
+* Let NodeBB take care of the rest
 
 ## Trouble?
 
