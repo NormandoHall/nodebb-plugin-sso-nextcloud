@@ -7,7 +7,7 @@ NodeBB Plugin that allows users to login/register via any NextCloud OAuth2 provi
 
 * Got to your NextCloud and go to Settings - > Security, scroll down to OAuth 2.0 Clients.
 * Add new client with a name, and the callback URL, like this:
-`https://NODEBB_URL/auth/forum/callback`
+`https://NODEBB_URL/auth/nextcloud/callback`
 * The copy the generated ID and SECRET
 * Edit your NodeBB `config.json` file and add the ID/Secret pair:
 
