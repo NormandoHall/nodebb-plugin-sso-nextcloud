@@ -47,8 +47,8 @@
 	 */
 
 	const constants = Object.freeze({
-		type: '',	// Either 'oauth' or 'oauth2'
-		name: '',	// Something unique to your OAuth provider in lowercase, like "github", or "nodebb"
+		type: 'oauth2',	// Either 'oauth' or 'oauth2'
+		name: 'nextcloud',	// Something unique to your OAuth provider in lowercase, like "github", or "nodebb"
 		oauth: {
 			requestTokenURL: '',
 			accessTokenURL: '',
@@ -57,12 +57,12 @@
 			consumerSecret: nconf.get('oauth:secret'),	// don't change this line
 		},
 		oauth2: {
-			authorizationURL: '',
-			tokenURL: '',
+			authorizationURL: 'https://NC_URL/apps/oauth2/authorize',
+			tokenURL: 'https://NC_URL/apps/oauth2/api/v1/token',
 			clientID: nconf.get('oauth:id'),	// don't change this line
 			clientSecret: nconf.get('oauth:secret'),	// don't change this line
 		},
-		userRoute: '',	// This is the address to your app's "user profile" API endpoint (expects JSON)
+		userRoute: 'https://NC_URL/ocs/v2.php/cloud/user?format=json',	// This is the address to your app's "user profile" API endpoint (expects JSON)
 	});
 
 	const OAuth = {};
@@ -112,8 +112,9 @@
 				// OAuth 2 options
 				opts = constants.oauth2;
 				opts.callbackURL = nconf.get('url') + '/auth/' + constants.name + '/callback';
+        this._oauth2.useAuthorizationHeaderforGET(true);
 
-				passportOAuth.Strategy.prototype.userProfile = function (accessToken, done) {
+        passportOAuth.Strategy.prototype.userProfile = function (accessToken, done) {
 					this._oauth2.get(constants.userRoute, accessToken, function (err, body/* , res */) {
 						if (err) {
 							return done(err);
@@ -175,16 +176,16 @@
 		// console.log(data);
 
 		var profile = {};
-		profile.id = data.id;
-		profile.displayName = data.name;
-		profile.emails = [{ value: data.email }];
+		profile.id = data.ocs.data.id;
+		profile.displayName = data.ocs.data['display-name'];
+		profile.emails = [{ value: data.ocs.data.email }];
 
 		// Do you want to automatically make somebody an admin? This line might help you do that...
 		// profile.isAdmin = data.isAdmin ? true : false;
 
 		// Delete or comment out the next TWO (2) lines when you are ready to proceed
-		process.stdout.write('===\nAt this point, you\'ll need to customise the above section to id, displayName, and emails into the "profile" object.\n===');
-		return callback(new Error('Congrats! So far so good -- please see server log for details'));
+		// process.stdout.write('===\nAt this point, you\'ll need to customise the above section to id, displayName, and emails into the "profile" object.\n===');
+		// return callback(new Error('Congrats! So far so good -- please see server log for details'));
 
 		// eslint-disable-next-line
 		callback(null, profile);
@@ -204,6 +205,10 @@
 			} else {
 				// New User
 				var success = function (uid) {
+          // Comment next two lines to not validate email
+					User.setUserField(uid, 'email:confirmed', 1);
+          db.sortedSetRemove('users:notvalidated', uid);
+
 					// Save provider-specific information to the user
 					User.setUserField(uid, constants.name + 'Id', payload.oAuthid);
 					db.setObjectField(constants.name + 'Id:uid', payload.oAuthid, uid);
