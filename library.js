@@ -112,9 +112,9 @@
 				// OAuth 2 options
 				opts = constants.oauth2;
 				opts.callbackURL = nconf.get('url') + '/auth/' + constants.name + '/callback';
-        this._oauth2.useAuthorizationHeaderforGET(true);
-
-        passportOAuth.Strategy.prototype.userProfile = function (accessToken, done) {
+        
+				passportOAuth.Strategy.prototype.userProfile = function (accessToken, done) {
+				this._oauth2.useAuthorizationHeaderforGET(true);
 					this._oauth2.get(constants.userRoute, accessToken, function (err, body/* , res */) {
 						if (err) {
 							return done(err);
